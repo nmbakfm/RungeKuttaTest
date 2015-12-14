@@ -1,10 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "MidiController.h"
-#include "KineticShape.h"
-#include "ParticleSystem.h"
-#include "FandamentalShapeRect.h"
+#include "ofxRungeKutta.hpp"
+
+#define LOOP 10000.f
 
 class ofApp : public ofBaseApp{
 
@@ -19,11 +18,20 @@ class ofApp : public ofBaseApp{
 		void mouseDragged(int x, int y, int button);
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
+		void mouseEntered(int x, int y);
+		void mouseExited(int x, int y);
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
     
-    ParticleSystem<KineticShape<FandamentalShapeRect> > particleSystem[5];
-    MidiController *midiController;
+    
+    static double _f1(double t, double * x);
+    static double _f2(double t, double * x);
+    
+    double t=0, tn=100;
+    double x[2];
+    double (*f[2])(double, double*);
+    double h;
+		
 };
