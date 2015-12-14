@@ -3,39 +3,57 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0);
-    x[0] = 30.0;
-    x[1] = 0.0;
     
-    f[0] = ofApp::_f1;
-    f[1] = ofApp::_f2;
+    f[0] = _f1;
+    f[1] = _f2;
     
-    h=(tn - t)/LOOP;
+    g[0] = _g1;
+    g[1] = _g2;
+    
+    float initialValues[] = {30.0, 0.0};
+    rk = RungeKutta(f, 0, 30, initialValues, LOOP, 2);
+    float initialValues2[] = {30.0, 0.0};
+    rk2 = RungeKutta(g, 0, 30, initialValues2, LOOP, 2);
+    
 }
 
-double ofApp::_f1(double t, double * x){
+float ofApp::_f1(float t, float * x){
     return x[1];
 }
 
-double ofApp::_f2(double t, double * x){
-    return -x[0];
+float ofApp::_f2(float t, float * x){
+    return - x[0] - 0.2 * x[1];
+}
+
+float ofApp::_g1(float t, float * x){
+    return x[1];
+}
+
+float ofApp::_g2(float t, float * x){
+    return -4*x[0] - 0.2 * x[1];
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    x[0] = 30.0;
-    x[1] = 0.0;
-
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    ofNoFill();
+//    ofSetColor(255);
 //    ofBeginShape();
-    for(int i=0; i<LOOP; ++i){
-        ofxRungeKutta::getValues(f, t, x, t+h, 1, 2);
-        ofDrawCircle(ofGetWidth()*i/LOOP, ofGetHeight()/2 + x[0], 1);
-        t+=h;
-    }
+//    for(int i=0; i<LOOP; ++i){
+//        ofVertex(ofGetWidth()*i/LOOP, rk.getValue(i, 0) + ofGetHeight()/2);
+//    }
 //    ofEndShape();
+    
+    
+    ofSetColor(255, 255, 0);
+    ofBeginShape();
+    for(int i=0; i<LOOP; ++i){
+        ofVertex(ofGetWidth()*i/LOOP, rk2.getValue(i, 0) + ofGetHeight()/2);
+    }
+    ofEndShape();
 }
 
 //--------------------------------------------------------------

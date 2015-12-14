@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxRungeKutta.hpp"
+#include "RungeKutta.hpp"
 
 #define LOOP 10000.f
 
@@ -26,12 +26,16 @@ class ofApp : public ofBaseApp{
     
     
     
-    static double _f1(double t, double * x);
-    static double _f2(double t, double * x);
+    static float _f1(float t, float * x);
+    static float _f2(float t, float * x);
     
-    double t=0, tn=100;
-    double x[2];
-    double (*f[2])(double, double*);
-    double h;
+    static float _g1(float t, float * x);
+    static float _g2(float t, float * x);
+    
+    float (*f[2])(float, float*);
+    float (*g[2])(float, float*);
+    
+    RungeKutta rk;
+    RungeKutta rk2;
 		
 };
